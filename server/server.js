@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const morgan = require("morgan");
 const authRoutes = require("./routes/auth-routes/index");
 const mediaRoutes = require("./routes/instructor-routes/media-routes");
 const instructorCourseRoutes = require("./routes/instructor-routes/course-routes");
@@ -23,14 +24,14 @@ app.use(
 );
 
 app.use(express.json());
-
+app.use(morgan("short"));
 //database connection
 mongoose
-  .connect(MONGO_URI)
-  .then(() => console.log("mongodb is connected"))
-  .catch((e) => console.log(e));
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("Successfully Connected to Database"))
+  .catch((err) => console.log(err));
 
-//routes configuration
+// routes configuration
 app.use("/auth", authRoutes);
 app.use("/media", mediaRoutes);
 app.use("/instructor/course", instructorCourseRoutes);
